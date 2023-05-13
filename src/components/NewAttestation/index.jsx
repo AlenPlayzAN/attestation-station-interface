@@ -153,7 +153,7 @@ const NewAttestation = () => {
           ? <>
             <FormRow>
               <FormLabel>
-                Ethereum address
+                TEST
               </FormLabel>
               <TextInput
                 type="text"
