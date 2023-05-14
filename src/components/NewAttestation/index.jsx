@@ -11,15 +11,9 @@ import { AttestationStationAddress } from '../../constants/addresses'
 import AttestationStationABI from '../../constants/abi.json'
 
 import { AttestForm, FormRow, FormLabel } from '../StyledFormComponents'
-import Tooltip from '../Tooltip'
 import { H2 } from '../OPStyledTypography'
 import { TextInput } from '../OPStyledTextInput'
 import { PrimaryButton } from '../OPStyledButton'
-import { Select } from '../OPStyledSelect'
-
-const AttestationTypeSelect = styled(Select)`
-  color: ${props => (props.value === 'default' ? '#8496AE' : 'inherit')}
-`
 
 const FormButton = styled.div`
   display: flex;
@@ -55,17 +49,13 @@ const NewAttestation = () => {
   const { chain } = useNetwork()
   const [etherscanBaseLink, setEtherscanBaseLink] = useState('')
 
-  const [attestationType, setAttestationType] = useState('default')
+  const [telegramID, setTelegramID] = useState('')
 
   const [about, setAbout] = useState('')
   const [key, setKey] = useState('')
   const [hashedKey, setHashedKey] = useState('')
   const [val, setVal] = useState('')
-  const [attestation, setAttestation] = useState({
-    about,
-    key,
-    val
-  })
+  const [attestation, setAttestation] = useState()
 
   const [isAboutValid, setIsAboutValid] = useState(false)
   const [isKeyValid, setIsKeyValid] = useState(false)
@@ -131,7 +121,7 @@ const NewAttestation = () => {
 
   return (
     <>
-      <H2>New attestation</H2>
+      <H2>New Attestation</H2>
       <AttestForm
         onSubmit={(e) => {
           e.preventDefault()
@@ -139,25 +129,33 @@ const NewAttestation = () => {
         }}
       >
         <FormRow>
-          <FormLabel>Attestation type</FormLabel>
-          <AttestationTypeSelect
-            value={attestationType}
-            onChange={(e) => setAttestationType(e.target.value)}
-          >
-            <option value="default" hidden>Select attestation type</option>
-            <option value="custom">Custom attestation</option>
-            <option value="soon" disabled>More schemas coming soon</option>
-          </AttestationTypeSelect>
+          <FormLabel>val</FormLabel>
+          <TextInput
+            type="text"
+            placeholder="Alex Doe"
+            onChange={(e) => setVal(e.target.value)}
+            value={val}
+            valid={isAboutValid}
+            />
         </FormRow>
-        {attestationType === 'custom'
-          ? <>
+        <FormRow>
+          <FormLabel>Name</FormLabel>
+          <TextInput
+            type="text"
+            placeholder="Alex Doe"
+            onChange={(e) => setAbout(e.target.value)}
+            value={about}
+            valid={isAboutValid}
+            />
+        </FormRow>
+           <>
             <FormRow>
               <FormLabel>
-                TEST
+                Description
               </FormLabel>
               <TextInput
                 type="text"
-                placeholder="Who's this attestation about?"
+                placeholder="Didn't shower in the past two weeks."
                 onChange={(e) => setAbout(e.target.value)}
                 value={about}
                 valid={isAboutValid}
@@ -166,17 +164,7 @@ const NewAttestation = () => {
 
             <FormRow>
               <FormLabel>
-                Attestation key&nbsp;
-                <Tooltip>
-                  <ul>
-                    <li>
-                      The key describes what the attestation is about.
-                    </li>
-                    <li>
-                      Example: sbvegan.interface.used:bool
-                    </li>
-                  </ul>
-                </Tooltip>
+                URL to Profile Picture
               </FormLabel>
               <TextInput
                 type="text"
@@ -192,30 +180,15 @@ const NewAttestation = () => {
                     setHashedKey('')
                   }
                 }}
-                placeholder="Attestation key"
+                placeholder="https://9x.lol/cat.png"
                 value={key}
                 valid={isKeyValid}
               />
             </FormRow>
-
             {key.length > 31
               ? <FormRow>
                   <FormLabel>
-                    Hashed key&nbsp;
-                    <Tooltip>
-                      <ul>
-                        <li>
-                          The key in the smart contract is limited to 32 bytes.
-                        </li>
-                        <li>
-                          When a key is 32 characters or longer, it is hashed with
-                          keccack256 to fit in the 32 bytes, and this is the result.
-                        </li>
-                        <li>
-                          This will be the key recorded and used for the AttestationStation.
-                        </li>
-                      </ul>
-                    </Tooltip>
+                    ASS
                   </FormLabel>
                   <HashedKey
                     type="text"
@@ -225,25 +198,125 @@ const NewAttestation = () => {
                 </FormRow>
               : <span></span>
             }
+            <H2>Socials</H2>
             <FormRow>
               <FormLabel>
-                Attestation value&nbsp;
-                <Tooltip>
-                  <ul>
-                    <li>
-                      The value that is associated with the key.
-                    </li>
-                    <li>
-                      Example: true
-                    </li>
-                  </ul>
-                </Tooltip>
+                Telegram
               </FormLabel>
               <TextInput
                 type="text"
-                placeholder="Attestation value"
-                onChange={(e) => setVal(e.target.value)}
-                value={val}
+                placeholder="https://t.me/alex"
+                onChange={(e) => setTelegramID(e.target.value)}
+                value={telegramID}
+                valid={isValValid}
+              />
+            </FormRow>
+            <FormRow>
+              <FormLabel>
+                Instagram
+              </FormLabel>
+              <TextInput
+                type="text"
+                placeholder="https://instagram.com/alex"
+                onChange={(e) => setTelegramID(e.target.value)}
+                value={telegramID}
+                valid={isValValid}
+              />
+            </FormRow>
+            <FormRow>
+              <FormLabel>
+                Pinterest
+              </FormLabel>
+              <TextInput
+                type="text"
+                placeholder="Who even uses Pinterest wtf"
+                onChange={(e) => setTelegramID(e.target.value)}
+                value={telegramID}
+                valid={isValValid}
+              />
+            </FormRow>
+            <FormRow>
+              <FormLabel>
+                Facebook
+              </FormLabel>
+              <TextInput
+                type="text"
+                placeholder="??????????"
+                onChange={(e) => setTelegramID(e.target.value)}
+                value={telegramID}
+                valid={isValValid}
+              />
+            </FormRow>
+
+            <FormRow>
+              <FormLabel>
+                Twitter
+              </FormLabel>
+              <TextInput
+                type="text"
+                placeholder="https://twitter.com/alex"
+                onChange={(e) => setTelegramID(e.target.value)}
+                value={telegramID}
+                valid={isValValid}
+              />
+            </FormRow>
+            <FormRow>
+              <FormLabel>
+                Youtube
+              </FormLabel>
+              <TextInput
+                type="text"
+                placeholder="https://www.youtube.com/@Alex"
+                onChange={(e) => setTelegramID(e.target.value)}
+                value={telegramID}
+                valid={isValValid}
+              />
+            </FormRow>
+            <FormRow>
+              <FormLabel>
+                Reddit
+              </FormLabel>
+              <TextInput
+                type="text"
+                placeholder="https://www.reddit.com/user/alex/"
+                onChange={(e) => setTelegramID(e.target.value)}
+                value={telegramID}
+                valid={isValValid}
+              />
+            </FormRow>
+            <FormRow>
+              <FormLabel>
+                Discord
+              </FormLabel>
+              <TextInput
+                type="text"
+                placeholder="https://discord.com/users/955094938998173718"
+                onChange={(e) => setTelegramID(e.target.value)}
+                value={telegramID}
+                valid={isValValid}
+              />
+            </FormRow>
+            <FormRow>
+              <FormLabel>
+                LinkedIn
+              </FormLabel>
+              <TextInput
+                type="text"
+                placeholder="https://linkedin.com/in/AlexGigaChad"
+                onChange={(e) => setTelegramID(e.target.value)}
+                value={telegramID}
+                valid={isValValid}
+              />
+            </FormRow>
+            <FormRow>
+              <FormLabel>
+                Email
+              </FormLabel>
+              <TextInput
+                type="text"
+                placeholder="a@9x.lol"
+                onChange={(e) => setTelegramID(e.target.value)}
+                value={telegramID}
                 valid={isValValid}
               />
             </FormRow>
@@ -264,7 +337,7 @@ const NewAttestation = () => {
               </FeedbackMessage>
             )}
           </>
-          : <></>}
+          <></>
         {(isPrepareError || isError) && (
           <FeedbackMessage>
               Error: {(prepareError || error)?.message}
